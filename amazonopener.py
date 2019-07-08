@@ -1,5 +1,4 @@
 import csv
-import os
 from bs4 import BeautifulSoup
 import requests
 import sqlite3
@@ -7,7 +6,7 @@ from datetime import datetime
 
 def setupDB(cursor):
     cursor.execute('''CREATE TABLE refprices
-                (price real, name text, amName text, locale text ,updatedAt text)
+                (price real, brand text, name text, amName text, locale text, updatedAt text)
                 ''')
 
 dbName = 'mobo.db'
@@ -65,9 +64,8 @@ with open("AM4Vcore.csv", 'r') as source:
             else :
                 if force == True or (cur.execute('SELECT amName FROM refprices WHERE locale = "{currentloc}" AND name = "{refname}" '.format(currentloc = currentLoc, refname = refName)).fetchone() == str(articles.contents[0])):
                     print("{price} ---- {item}".format(item=articles.contents[0],price=prices.contents[0]) ) 
-                    item = (str(float(prices.contents[0].replace(",","."))), refName, str(articles.contents[0]), currentLoc, datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
-                    # print(item)
-                    cur.execute('INSERT INTO refprices VALUES (?,?,?,?,?)',item)
+                    item = (str(float(prices.contents[0].replace(",","."))), brand, refName, str(articles.contents[0]), currentLoc, datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
+                    cur.execute('INSERT INTO refprices VALUES (?,?,?,?,?,?)',item)
                 else:
                     print('Different item')
     conn.commit()

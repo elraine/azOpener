@@ -1,0 +1,5 @@
+azOpener
+beautifulsoup4==4.7.1
+html5lib==1.0.1
+requests==2.22.0
+soupsieve==1.9.2
